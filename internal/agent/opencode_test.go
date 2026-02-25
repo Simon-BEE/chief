@@ -127,14 +127,11 @@ func TestOpenCodeProvider_InteractiveCommand(t *testing.T) {
 	}
 }
 
-func TestOpenCodeProvider_ParseLine(t *testing.T) {
+func TestOpenCodeProvider_ParseLine_CodexFormatIgnored(t *testing.T) {
 	p := NewOpenCodeProvider("", "")
 	e := p.ParseLine(`{"type":"thread.started"}`)
-	if e == nil {
-		t.Fatal("ParseLine(thread.started) returned nil")
-	}
-	if e.Type != loop.EventIterationStart {
-		t.Errorf("ParseLine(thread.started) Type = %v, want EventIterationStart", e.Type)
+	if e != nil {
+		t.Errorf("ParseLine(codex format) should return nil, got %v", e.Type)
 	}
 }
 

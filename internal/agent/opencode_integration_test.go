@@ -83,8 +83,7 @@ fi
 
 work_dir="$5"
 printf '%s' "$6" > "$work_dir/.opencode_prompt"
-printf '%s\n' '{"type":"thread.started"}'
-printf '%s\n' '{"type":"item.completed","item":{"id":"msg_1","type":"agent_message","text":"working"}}'
+printf '%s\n' '{"type":"text","part":{"type":"text","text":"working on it"}}'
 `
 	scriptPath := createExecutableScript(t, tmpDir, "mock-opencode-success", script)
 
@@ -305,7 +304,7 @@ if [ "$1" != "run" ] || [ "$2" != "--format" ] || [ "$3" != "json" ] || [ "$4" !
   exit 91
 fi
 
-printf '%s\n' '{"type":"thread.started"}'
+printf '%s\n' '{"type":"text","part":{"type":"text","text":"starting"}}'
 sleep 5
 `
 	scriptPath := createExecutableScript(t, tmpDir, "mock-opencode-cancel", script)

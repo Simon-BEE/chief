@@ -62,10 +62,7 @@ func (p *OpenCodeProvider) FixJSONCommand(prompt string) (*exec.Cmd, loop.Output
 
 // ParseLine implements loop.Provider.
 func (p *OpenCodeProvider) ParseLine(line string) *loop.Event {
-	if ev := loop.ParseLineOpenCode(line); ev != nil {
-		return ev
-	}
-	return loop.ParseLineCodex(line)
+	return loop.ParseLineOpenCode(line)
 }
 
 // LogFileName implements loop.Provider.
@@ -78,6 +75,12 @@ func (p *OpenCodeProvider) commonModelArgs() []string {
 	return []string{"--model", p.model}
 }
 
+// runArgs builds the argument list for `opencode run`.
+// NOTE: the prompt is passed as a trailing positional argument because the
+// OpenCode CLI does not support reading it from stdin. This is subject to
+// OS argument-length limits (ARG_MAX: ~256 KB on macOS, ~2 MB on Linux).
+// Very large prompts may need to be written to a temp file and passed via
+// --file if OpenCode adds that capability for prompt input in the future.
 func (p *OpenCodeProvider) runArgs(format, workDir, prompt string) []string {
 	args := p.commonModelArgs()
 	args = append(args, "run", "--format", format, "--dir", workDir, prompt)
